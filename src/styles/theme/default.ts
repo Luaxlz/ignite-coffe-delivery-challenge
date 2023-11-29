@@ -1,5 +1,5 @@
 export const defaultTheme = {
-  //Product
+  // Product
   'yellow-dark': '#C47F17',
   yellow: '#DBAC2C',
   'yellow-light': '#F1E9C9',
@@ -7,7 +7,7 @@ export const defaultTheme = {
   purple: '#8047F8',
   'purple-light': '#EBE5F9',
 
-  //Base
+  // Base
   'base-title': '#272221',
   'base-subtitle': '#403937',
   'base-text': '#574F4D',
@@ -19,7 +19,7 @@ export const defaultTheme = {
   background: '#FAFAFA',
   white: '#FFFFFF',
 
-  //Typography
+  // Typography
   fontSize: {
     'title-xl': '3rem',
     'title-l': '2rem',
@@ -34,4 +34,4 @@ export const defaultTheme = {
     'button-g': '0.875rem',
     'button-m': '0.75rem',
   },
-};
+}
