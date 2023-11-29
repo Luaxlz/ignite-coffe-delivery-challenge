@@ -8,8 +8,10 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background: #333;
-        color: #fff;
+        background: ${(props) => props.theme.background};
+        color: ${(props) => props.theme['base-text']};
         font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 1rem;
     }
 `;
