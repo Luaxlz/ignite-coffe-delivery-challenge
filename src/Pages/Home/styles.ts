@@ -6,7 +6,14 @@ export const HomeContainer = styled.main`
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  padding: 0 10rem;
+
+  #coffeeListTitle {
+    padding: 0 10rem;
+    font-family: 'Baloo 2';
+    font-size: ${(props) => props.theme.fontSize['title-l']};
+    line-height: 130%;
+    color: ${(props) => props.theme['base-subtitle']};
+  }
 `;
 
 export const IntroGridContainer = styled.div`
@@ -15,9 +22,14 @@ export const IntroGridContainer = styled.div`
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 1rem;
   grid-row-gap: 0px;
+  width: 100%;
   height: 34rem;
   background-image: url(${backgroundImage});
-  background-size: contain;
+  background-size: auto;
+  background-position: center;
+  box-shadow: 0 0 8px 8px ${(props) => props.theme['background']} inset;
+  margin-bottom: 5rem;
+  padding: 0 10rem;
 `;
 
 export const IntroTitleGrid = styled.div`
@@ -98,7 +110,7 @@ export const IntroImageGrid = styled.div`
   grid-area: 1 / 2 / 3 / 3;
 
   img {
-    width: 100%;
+    width: auto;
     height: auto;
   }
 `;
@@ -109,4 +121,5 @@ export const CoffeeListGridContainer = styled.div`
   grid-template-rows: repeat(4, 1fr);
   grid-column-gap: 32px;
   grid-row-gap: 40px;
+  padding: 0 10rem;
 `;
