@@ -1,5 +1,11 @@
 import {
+  CoffeeCard,
+  CoffeeCardActions,
+  CoffeeCardBadge,
+  CoffeeCardInfoContainer,
+  CoffeeCardPrice,
   CoffeeListGridContainer,
+  CoffeeCounterButton,
   HomeContainer,
   IntroGridContainer,
   IntroImageGrid,
@@ -10,7 +16,16 @@ import {
   IntroTopicItem,
 } from './styles';
 import IntroImage from '../../assets/Home/Imagem@ignite-coffee-delivery.svg';
-import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react';
+import {
+  Coffee,
+  Minus,
+  Package,
+  Plus,
+  ShoppingCart,
+  ShoppingCartSimple,
+  Timer,
+} from '@phosphor-icons/react';
+import TradicionalExpresso from '../../assets/Coffe/Type=Expresso@ignite-coffe-delivery.svg';
 
 export function Home() {
   return (
@@ -58,7 +73,42 @@ export function Home() {
         </IntroItemsGrid>
       </IntroGridContainer>
       <h1 id='coffeeListTitle'>Nossos Cafés</h1>
-      <CoffeeListGridContainer>Coffee List</CoffeeListGridContainer>
+      <CoffeeListGridContainer>
+        {Array.from({ length: 14 }).map(() => (
+          <CoffeeCard>
+            <img src={TradicionalExpresso} alt='' />
+            <CoffeeCardBadge>
+              <span>tradicional</span>
+            </CoffeeCardBadge>
+            <span id='cardTitle'>Expresso Tradicional</span>
+            <p id='cardSubTitle'>
+              O tradicional café feito com água quente e grãos moídos
+            </p>
+            <CoffeeCardInfoContainer>
+              <CoffeeCardPrice>
+                <span id='prefix'>R$</span>
+                <span id='price'>9,90</span>
+              </CoffeeCardPrice>
+
+              <CoffeeCardActions>
+                <CoffeeCounterButton>
+                  <button>
+                    <Minus size={14} weight='bold' />
+                  </button>
+                  <span id='counter'>1</span>
+                  <button>
+                    <Plus size={14} weight='bold' />
+                  </button>
+                </CoffeeCounterButton>
+
+                <button id='buy'>
+                  <ShoppingCartSimple size={22} weight='fill' />
+                </button>
+              </CoffeeCardActions>
+            </CoffeeCardInfoContainer>
+          </CoffeeCard>
+        ))}
+      </CoffeeListGridContainer>
     </HomeContainer>
   );
 }
