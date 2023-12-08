@@ -4,6 +4,7 @@ import {
   CheckoutTitle,
   FormInfo,
   FormInfoText,
+  InputContainer,
   OrderForm,
   OrderFormContainer,
   OrderProductsContainer,
@@ -26,6 +27,25 @@ export function Checkout() {
                 </span>
               </FormInfoText>
             </FormInfo>
+            <form action=''>
+              <InputContainer>
+                <input id='cepInput' type='text' placeholder='CEP' />
+                <input id='streetInput' type='text' placeholder='Rua' />
+                <div id='inputWrapper1'>
+                  <input id='numberInput' type='text' placeholder='Número' />
+                  <input
+                    id='complementInput'
+                    type='text'
+                    placeholder='Complemento'
+                  />
+                </div>
+                <div id='inputWrapper2'>
+                  <input id='bairroInput' type='text' placeholder='Bairro' />
+                  <input id='cityInput' type='text' placeholder='Cidade' />
+                  <input id='ufInput' type='text' placeholder='UF' />
+                </div>
+              </InputContainer>
+            </form>
           </OrderForm>
           <PaymentContainer>Payment</PaymentContainer>
         </OrderFormContainer>
