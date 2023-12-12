@@ -5,7 +5,6 @@ import {
   CoffeeCardInfoContainer,
   CoffeeCardPrice,
   CoffeeListGridContainer,
-  CoffeeCounterButton,
   HomeContainer,
   IntroGridContainer,
   IntroImageGrid,
@@ -18,14 +17,13 @@ import {
 import IntroImage from '../../assets/Home/Imagem@ignite-coffee-delivery.svg';
 import {
   Coffee,
-  Minus,
   Package,
-  Plus,
   ShoppingCart,
   ShoppingCartSimple,
   Timer,
 } from '@phosphor-icons/react';
 import TradicionalExpresso from '../../assets/Coffe/Type=Expresso@ignite-coffe-delivery.svg';
+import { ProductQuantityButton } from '../../components/ProductQuantityButton';
 
 export function Home() {
   return (
@@ -91,15 +89,7 @@ export function Home() {
               </CoffeeCardPrice>
 
               <CoffeeCardActions>
-                <CoffeeCounterButton>
-                  <button>
-                    <Minus size={14} weight='bold' />
-                  </button>
-                  <span id='counter'>1</span>
-                  <button>
-                    <Plus size={14} weight='bold' />
-                  </button>
-                </CoffeeCounterButton>
+                <ProductQuantityButton />
 
                 <button id='buy'>
                   <ShoppingCartSimple size={22} weight='fill' />

@@ -1,16 +1,34 @@
-import { MapPinLine } from '@phosphor-icons/react';
 import {
+  Bank,
+  CreditCard,
+  CurrencyDollar,
+  MapPinLine,
+  Money,
+} from '@phosphor-icons/react';
+import {
+  CartContainer,
   CheckoutContainer,
   CheckoutTitle,
-  FormInfo,
-  FormInfoText,
+  Divider,
   InputContainer,
   OrderForm,
   OrderFormContainer,
   OrderProductsContainer,
+  PaymentActions,
   PaymentContainer,
+  ResumeContainer,
 } from './styles';
+import { TitleInfo } from './components/TitleInfo';
+import { CartCoffeeCard } from './components/CartCoffeeCard';
 
+enum Methods {
+  'creditCard',
+  'debitCard',
+  'cash',
+}
+interface PaymentMethodProps {
+  method: Methods;
+}
 export function Checkout() {
   return (
     <>
@@ -18,15 +36,12 @@ export function Checkout() {
         <OrderFormContainer>
           <CheckoutTitle>Complete o seu pedido</CheckoutTitle>
           <OrderForm>
-            <FormInfo>
-              <MapPinLine size={22} />
-              <FormInfoText>
-                <span id='title'>Endereço de Entrega</span>
-                <span id='subtitle'>
-                  Informe o endereço onde deseja receber o seu pedido
-                </span>
-              </FormInfoText>
-            </FormInfo>
+            <TitleInfo
+              Icon={MapPinLine}
+              title='Endereço de Entrega'
+              subtitle='Informe o endereço onde deseja receber seu pedido'
+              color='yellow-dark'
+            />
             <form action=''>
               <InputContainer>
                 <input id='cepInput' type='text' placeholder='CEP' />
@@ -47,10 +62,57 @@ export function Checkout() {
               </InputContainer>
             </form>
           </OrderForm>
-          <PaymentContainer>Payment</PaymentContainer>
+          <PaymentContainer>
+            <TitleInfo
+              Icon={CurrencyDollar}
+              title='Pagamento'
+              subtitle='O pagamento é feito na entrega. Escolha a forma que deseja pagar'
+              color='purple'
+            />
+
+            <PaymentActions>
+              <button>
+                <CreditCard size={22} className='paymentButtonIcon' />
+                Cartão de Crédito
+              </button>
+              <button>
+                <Bank size={22} className='paymentButtonIcon' />
+                Cartão de Débito
+              </button>
+              <button>
+                <Money size={22} className='paymentButtonIcon' />
+                Dinheiro
+              </button>
+            </PaymentActions>
+          </PaymentContainer>
         </OrderFormContainer>
         <OrderProductsContainer>
           <CheckoutTitle>Cafés selecionados</CheckoutTitle>
+          <CartContainer>
+            <div id='productsContainer'>
+              {Array.from({ length: 2 }).map(() => (
+                <>
+                  <CartCoffeeCard />
+                  <Divider />
+                </>
+              ))}
+            </div>
+            <ResumeContainer>
+              <div className='resumeInfo'>
+                <span>Total de itens</span>
+                <span className='resumeValue'>R$ 29,70</span>
+              </div>
+              <div className='resumeInfo'>
+                <span>Entrega</span>
+                <span className='resumeValue'>R$ 3,50</span>
+              </div>
+              <div className='resumeInfo' id='totalInfo'>
+                <span>Total</span>
+                <span>R$ 33,20</span>
+              </div>
+            </ResumeContainer>
+            <button id='confirmOrderButton'>Confirmar pedido</button>
+          </CartContainer>
         </OrderProductsContainer>
       </CheckoutContainer>
     </>
