@@ -20,15 +20,6 @@ import {
 } from './styles';
 import { TitleInfo } from './components/TitleInfo';
 import { CartCoffeeCard } from './components/CartCoffeeCard';
-
-enum Methods {
-  'creditCard',
-  'debitCard',
-  'cash',
-}
-interface PaymentMethodProps {
-  method: Methods;
-}
 export function Checkout() {
   return (
     <>

@@ -34,4 +34,4 @@ export const defaultTheme = {
     'button-g': '0.875rem',
     'button-m': '0.75rem',
   },
-}
+};
