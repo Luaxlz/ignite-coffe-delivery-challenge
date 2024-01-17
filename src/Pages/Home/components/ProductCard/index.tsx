@@ -31,7 +31,7 @@ interface CartContextType {
   Items: Item[];
 }
 
-const CartContext = createContext({});
+const CartContext = createContext({} as CartContextType);
 
 export function ProductCard({ coffee }: Props) {
   const theme = useTheme();
