@@ -56,4 +56,26 @@ export const InfoContent = styled.div`
   padding: 40px;
   background-color: white;
   border-radius: 6px 36px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    svg {
+      border-radius: 50%;
+      padding: 8px;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: flex-start;
+    }
+  }
 `;

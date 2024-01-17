@@ -3,21 +3,18 @@ import {
   CoffeeCardContainer,
   ProductValueInfo,
 } from './styles';
-import CoffeeImage from '../../../../assets/Coffe/Type=Expresso@ignite-coffe-delivery.svg';
-import { ProductQuantityButton } from '../../../../components/ProductQuantityButton';
+import { QuantityButton } from '../../../../components/QuantityButton';
 import { Trash } from '@phosphor-icons/react';
 
 export function CartCoffeeCard() {
   return (
     <CoffeeCardContainer>
       <CardInfoContainer>
-        <div id='productImageContainer'>
-          <img src={CoffeeImage} alt='' />
-        </div>
+        <div id='productImageContainer' />
         <div id='productInfoContainer'>
           <span id='productTitle'>Expresso Tradicional</span>
           <div id='actionButtonsContainer'>
-            <ProductQuantityButton />
+            <QuantityButton quantity={1} />
             <button id='removeProductButton'>
               <div id='trashIcon'>
                 <Trash size={16} />

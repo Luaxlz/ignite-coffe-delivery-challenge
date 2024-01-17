@@ -1,9 +1,4 @@
 import {
-  CoffeeCard,
-  CoffeeCardActions,
-  CoffeeCardBadge,
-  CoffeeCardInfoContainer,
-  CoffeeCardPrice,
   CoffeeListGridContainer,
   HomeContainer,
   IntroGridContainer,
@@ -15,15 +10,9 @@ import {
   IntroTopicItem,
 } from './styles';
 import IntroImage from '../../assets/Home/Imagem@ignite-coffee-delivery.svg';
-import {
-  Coffee,
-  Package,
-  ShoppingCart,
-  ShoppingCartSimple,
-  Timer,
-} from '@phosphor-icons/react';
-import TradicionalExpresso from '../../assets/Coffe/Type=Expresso@ignite-coffe-delivery.svg';
-import { ProductQuantityButton } from '../../components/ProductQuantityButton';
+import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react';
+import { ProductCard } from './components/ProductCard';
+import { coffees } from '../../../data.json';
 
 export function Home() {
   return (
@@ -72,31 +61,8 @@ export function Home() {
       </IntroGridContainer>
       <h1 id='coffeeListTitle'>Nossos Cafés</h1>
       <CoffeeListGridContainer>
-        {Array.from({ length: 14 }).map(() => (
-          <CoffeeCard>
-            <img src={TradicionalExpresso} alt='' />
-            <CoffeeCardBadge>
-              <span>tradicional</span>
-            </CoffeeCardBadge>
-            <span id='cardTitle'>Expresso Tradicional</span>
-            <p id='cardSubTitle'>
-              O tradicional café feito com água quente e grãos moídos
-            </p>
-            <CoffeeCardInfoContainer>
-              <CoffeeCardPrice>
-                <span id='prefix'>R$</span>
-                <span id='price'>9,90</span>
-              </CoffeeCardPrice>
-
-              <CoffeeCardActions>
-                <ProductQuantityButton />
-
-                <button id='buy'>
-                  <ShoppingCartSimple size={22} weight='fill' />
-                </button>
-              </CoffeeCardActions>
-            </CoffeeCardInfoContainer>
-          </CoffeeCard>
+        {coffees.map((coffee) => (
+          <ProductCard key={coffee.id} coffee={coffee} />
         ))}
       </CoffeeListGridContainer>
     </HomeContainer>

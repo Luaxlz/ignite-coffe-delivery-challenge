@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 
 export const CheckoutContainer = styled.main`
-  display: flex;
-  flex-direction: row;
   width: 100%;
   height: 100%;
-  gap: 2rem;
-  padding: 2.5rem 10rem;
+
+  form {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 40px 160px;
+  }
 `;
 
 export const CheckoutTitle = styled.div`
@@ -19,6 +22,8 @@ export const CheckoutTitle = styled.div`
 `;
 
 export const OrderFormContainer = styled.div`
+  max-width: 640px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -27,8 +32,9 @@ export const OrderFormContainer = styled.div`
 export const OrderForm = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40rem;
+  width: 100%;
   height: 23.25rem;
+  border-radius: 6px;
   background-color: ${(props) => props.theme['base-card']};
   padding: 2.5rem;
   gap: 2rem;
@@ -38,8 +44,8 @@ export const PaymentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  width: 40rem;
-  height: 12.93rem;
+  width: 100%;
+  border-radius: 6px;
   background-color: ${(props) => props.theme['base-card']};
   padding: 2.5rem;
 `;
@@ -47,8 +53,7 @@ export const PaymentContainer = styled.div`
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 35rem;
-  max-height: 13.5rem;
+  width: 100%;
   gap: 1rem;
 
   input {
@@ -149,7 +154,7 @@ export const PaymentActions = styled.div`
 export const OrderProductsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 28rem;
+  width: 448px;
   max-height: 100%;
   gap: 0.75rem;
 `;
