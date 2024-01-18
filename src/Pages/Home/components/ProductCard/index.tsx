@@ -7,10 +7,11 @@ import {
   Actions,
   Tags,
 } from './styles';
-import { createContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
+import { CartContext } from '../../../../contexts/CartContext';
 
-type Props = {
+export type CoffeeProps = {
   coffee: {
     id: string;
     title: string;
@@ -18,24 +19,12 @@ type Props = {
     tags: string[];
     price: number;
     image: string;
-    quantity: 1;
   };
 };
 
-interface Item {
-  id: string;
-  quantity: number;
-}
-
-interface CartContextType {
-  Items: Item[];
-}
-
-const CartContext = createContext({} as CartContextType);
-
-export function ProductCard({ coffee }: Props) {
+export function ProductCard({ coffee }: CoffeeProps) {
+  const { addItemToCart } = useContext(CartContext);
   const theme = useTheme();
-  const [cart, setCart] = useState<Item[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [isItemAdded, setIsItemAdded] = useState(false);
 
@@ -48,21 +37,10 @@ export function ProductCard({ coffee }: Props) {
   }
 
   function handleAddItem() {
-    const isItemAlreadyAdded = cart.find((item) => item.id === coffee.id);
-
-    if (isItemAlreadyAdded) {
-      setCart((state) =>
-        state.map((item) => {
-          if (item.id === coffee.id) {
-            return { ...item, quantity: quantity };
-          } else {
-            return item;
-          }
-        })
-      );
-    } else {
-      setCart((state) => [...state, { id: coffee.id, quantity }]);
-    }
+    addItemToCart({
+      ...coffee,
+      quantity,
+    });
     setIsItemAdded(true);
   }
 

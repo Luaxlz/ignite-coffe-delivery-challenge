@@ -163,7 +163,7 @@ export const CartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  max-height: 100%;
   background-color: ${(props) => props.theme['base-card']};
   padding: 2.5rem;
   border-radius: 6px 44px;

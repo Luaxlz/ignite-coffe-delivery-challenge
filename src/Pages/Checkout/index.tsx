@@ -23,6 +23,9 @@ import { CartCoffeeCard } from './components/CartCoffeeCard';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Fragment, useContext } from 'react';
+import { CartContext } from '../../contexts/CartContext';
+import { coffees } from '../../../data.json';
 
 const deliveryAddressSchema = zod.object({
   cep: zod.string().min(1),
@@ -37,6 +40,7 @@ const deliveryAddressSchema = zod.object({
 export type OrderInfo = zod.infer<typeof deliveryAddressSchema>;
 
 export function Checkout() {
+  const { cart } = useContext(CartContext);
   const { register, handleSubmit, reset } = useForm<OrderInfo>({
     resolver: zodResolver(deliveryAddressSchema),
     defaultValues: {
@@ -50,11 +54,33 @@ export function Checkout() {
     },
   });
 
+  const cartHasItems = cart.length >= 1;
+  const deliveryFee = 3.5;
+
   function handleCheckout(data: any) {
     console.log(data);
 
     reset();
   }
+
+  const coffeesInCart = cart.map((item) => {
+    const coffeeInfo = coffees.find((coffee) => coffee.id === item.id);
+
+    if (!coffeeInfo) {
+      throw new Error('Café não encontrado');
+    }
+
+    return { ...coffeeInfo, quantity: item.quantity };
+  });
+
+  const coffeesInCartTotalPrice = coffeesInCart.reduce(
+    (previousValue, currentCoffee) => {
+      return (previousValue += currentCoffee.price * currentCoffee.quantity);
+    },
+    0
+  );
+
+  const orderTotalPrice = coffeesInCartTotalPrice + deliveryFee;
 
   return (
     <>
@@ -153,25 +179,33 @@ export function Checkout() {
             <CheckoutTitle>Cafés selecionados</CheckoutTitle>
             <CartContainer>
               <div id='productsContainer'>
-                {Array.from({ length: 2 }).map(() => (
-                  <>
-                    <CartCoffeeCard />
-                    <Divider />
-                  </>
-                ))}
+                {cartHasItems ? (
+                  coffeesInCart.map((coffee) => (
+                    <Fragment key={coffee.id}>
+                      <CartCoffeeCard coffee={coffee} />
+                      <Divider />
+                    </Fragment>
+                  ))
+                ) : (
+                  <span>Nenhum item no carrinho</span>
+                )}
               </div>
               <ResumeContainer>
                 <div className='resumeInfo'>
-                  <span>Total de itens</span>
-                  <span className='resumeValue'>R$ 29,70</span>
+                  <span>Total dos itens</span>
+                  <span className='resumeValue'>
+                    R$ {coffeesInCartTotalPrice.toFixed(2)}
+                  </span>
                 </div>
                 <div className='resumeInfo'>
                   <span>Entrega</span>
-                  <span className='resumeValue'>R$ 3,50</span>
+                  <span className='resumeValue'>
+                    R$ {deliveryFee.toFixed(2)}
+                  </span>
                 </div>
                 <div className='resumeInfo' id='totalInfo'>
                   <span>Total</span>
-                  <span>R$ 33,20</span>
+                  <span>R$ {orderTotalPrice.toFixed(2)}</span>
                 </div>
               </ResumeContainer>
               <button id='confirmOrderButton' type='submit'>
