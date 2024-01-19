@@ -38,5 +38,27 @@ export const HeaderContainer = styled.header`
       color: ${(props) => props.theme['yellow-dark']};
       background: ${(props) => props.theme['yellow-light']};
     }
+    #cartContainer {
+      display: flex;
+      z-index: 1;
+    }
   }
+`;
+
+export const CartCounter = styled.div`
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  left: -10px;
+  top: -10px;
+  border-radius: 50%;
+  background-color: ${(props) => props.theme['yellow-dark']};
+  z-index: 100;
+
+  font-size: ${(props) => props.theme.fontSize['text-s']};
+  font-weight: 400;
+  color: ${(props) => props.theme.white};
 `;

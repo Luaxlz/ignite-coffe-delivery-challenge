@@ -16,6 +16,7 @@ import {
   OrderProductsContainer,
   PaymentActions,
   PaymentContainer,
+  PaymentErrorMessage,
   ResumeContainer,
 } from './styles';
 import { TitleInfo } from './components/TitleInfo';
@@ -26,6 +27,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Fragment, useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import { coffees } from '../../../data.json';
+import { Radio } from './components/Radio';
+import { useNavigate } from 'react-router-dom';
 
 const deliveryAddressSchema = zod.object({
   cep: zod.string().min(1),
@@ -35,33 +38,28 @@ const deliveryAddressSchema = zod.object({
   number: zod.string().min(1),
   state: zod.string().min(1),
   street: zod.string().min(1),
+  paymentMethod: zod.enum(['credit', 'debit', 'cash'], {
+    invalid_type_error: 'Informe um método de pagamento',
+  }),
 });
 
 export type OrderInfo = zod.infer<typeof deliveryAddressSchema>;
 
 export function Checkout() {
+  const navigate = useNavigate();
   const { cart } = useContext(CartContext);
-  const { register, handleSubmit, reset } = useForm<OrderInfo>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<OrderInfo>({
     resolver: zodResolver(deliveryAddressSchema),
-    defaultValues: {
-      cep: '',
-      city: '',
-      complement: '',
-      district: '',
-      number: '',
-      state: '',
-      street: '',
-    },
   });
 
   const cartHasItems = cart.length >= 1;
   const deliveryFee = 3.5;
-
-  function handleCheckout(data: any) {
-    console.log(data);
-
-    reset();
-  }
 
   const coffeesInCart = cart.map((item) => {
     const coffeeInfo = coffees.find((coffee) => coffee.id === item.id);
@@ -81,6 +79,17 @@ export function Checkout() {
   );
 
   const orderTotalPrice = coffeesInCartTotalPrice + deliveryFee;
+
+  const selectedPaymentMethod = watch('paymentMethod');
+
+  function handleCheckout(data: any) {
+    if (coffeesInCart.length < 1) {
+      alert('Ops! Parece que você não tem nada no seu carrinho ainda');
+      navigate('/');
+    }
+    //checkout(data);
+    reset();
+  }
 
   return (
     <>
@@ -158,20 +167,38 @@ export function Checkout() {
                 subtitle='O pagamento é feito na entrega. Escolha a forma que deseja pagar'
                 color='purple'
               />
-
               <PaymentActions>
-                <button type='button'>
-                  <CreditCard size={22} className='paymentButtonIcon' />
-                  Cartão de Crédito
-                </button>
-                <button type='button'>
-                  <Bank size={22} className='paymentButtonIcon' />
-                  Cartão de Débito
-                </button>
-                <button type='button'>
-                  <Money size={22} className='paymentButtonIcon' />
-                  Dinheiro
-                </button>
+                {errors.paymentMethod ? (
+                  <PaymentErrorMessage role='alert'>
+                    {errors.paymentMethod.message}
+                  </PaymentErrorMessage>
+                ) : null}
+                <div>
+                  <Radio
+                    isSelected={selectedPaymentMethod === 'credit'}
+                    {...register('paymentMethod')}
+                    value='credit'
+                  >
+                    <CreditCard size={16} />
+                    <span>Cartão de crédito</span>
+                  </Radio>
+                  <Radio
+                    isSelected={selectedPaymentMethod === 'debit'}
+                    {...register('paymentMethod')}
+                    value='debit'
+                  >
+                    <Bank size={16} />
+                    <span>Cartão de Débito</span>
+                  </Radio>
+                  <Radio
+                    isSelected={selectedPaymentMethod === 'cash'}
+                    {...register('paymentMethod')}
+                    value='cash'
+                  >
+                    <Money size={16} />
+                    <span>Dinheiro</span>
+                  </Radio>
+                </div>
               </PaymentActions>
             </PaymentContainer>
           </OrderFormContainer>

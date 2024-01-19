@@ -62,11 +62,13 @@ export function ProductCard({ coffee }: CoffeeProps) {
   return (
     <CoffeeCard>
       <img src={coffee.image} alt={coffee.title} />
-      <Tags>
+      <div>
         {coffee.tags.map((tag) => (
-          <span key={tag}>{tag}</span>
+          <Tags>
+            <span key={tag}>{tag}</span>
+          </Tags>
         ))}
-      </Tags>
+      </div>
       <span id='cardTitle'>{coffee.title}</span>
       <p id='cardSubTitle'>{coffee.description}</p>
       <CoffeeCardInfoContainer>

@@ -32,17 +32,26 @@ export const CoffeeCard = styled.div`
     max-width: 13.5rem;
     margin-bottom: 2.06rem;
   }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 11px;
+    max-width: 100%;
+  }
 `;
 
 export const Tags = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5.06rem;
+  //max-width: 100%;
   height: 1.31rem;
   background-color: ${(props) => props.theme['yellow-light']};
   border-radius: 100px;
   margin: 0.75rem auto 1rem;
+  padding: 12px;
 
   span {
     color: ${(props) => props.theme['yellow-dark']};

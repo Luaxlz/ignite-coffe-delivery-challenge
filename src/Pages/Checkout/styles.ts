@@ -118,36 +118,41 @@ export const InputContainer = styled.div`
 
 export const PaymentActions = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.75rem;
   width: 35rem;
   height: 3.1875rem;
 
-  button {
+  > div {
     display: flex;
-    flex: 1;
+    flex-direction: row;
+    width: 100%;
     gap: 0.75rem;
-    padding: 0 1rem;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 6px;
-    border: 0;
-    background: ${(props) => props.theme['base-button']};
-    color: ${(props) => props.theme['base-text']};
-    cursor: pointer;
-    .paymentButtonIcon {
-      color: ${(props) => props.theme['purple']};
-    }
+  }
+`;
+
+export const PaymentButton = styled.button<{ $selectedPayment?: boolean }>`
+  display: flex;
+  flex: 1;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 6px;
+  border: ${({ theme, $selectedPayment }) =>
+    $selectedPayment ? `1px solid ${theme.purple}` : 0};
+  background: ${(props) => props.theme['base-button']};
+  color: ${(props) => props.theme['base-text']};
+  cursor: pointer;
+
+  svg {
+    color: ${(props) => props.theme['purple']};
   }
 
-  button:hover {
+  &:hover {
     background-color: ${(props) => props.theme['base-hover']};
     color: ${(props) => props.theme['base-subtitle']};
     transition: all 0.2s;
-  }
-
-  button:active {
-    background-color: ${(props) => props.theme['purple-light']};
   }
 `;
 
@@ -229,4 +234,10 @@ export const Divider = styled.div`
   width: 100%;
   height: 0;
   border: 1px solid ${(props) => props.theme['base-button']};
+`;
+
+export const PaymentErrorMessage = styled.p`
+  font-size: ${(props) => props.theme.fontSize['text-xs']};
+  font-weight: 400;
+  color: red;
 `;
