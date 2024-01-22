@@ -33,69 +33,65 @@ export const CartContext = createContext({} as CartContextType);
 export function CartContextProvider({ children }: CartContextProps) {
   const [cartState, dispatch] = useReducer(
     (state: CartState, action: any) => {
-      if (action.type === 'ADD_ITEM') {
-        const itemAlreadyAdded = state.cart.find(
-          (item) => item.id === action.payload.id
-        );
+      switch (action.type) {
+        case 'ADD_ITEM':
+          const itemAlreadyAdded = state.cart.find(
+            (item) => item.id === action.payload.id
+          );
 
-        if (itemAlreadyAdded) {
+          if (itemAlreadyAdded) {
+            return {
+              ...state,
+              cart: state.cart.map((item) => {
+                if (item.id === action.payload.id) {
+                  return { ...item, quantity: action.payload.quantity };
+                } else {
+                  return item;
+                }
+              }),
+            };
+          } else {
+            return {
+              ...state,
+              cart: [...state.cart, { ...action.payload }],
+            };
+          }
+        case 'INCREMENT_ITEM_QUANTITY':
           return {
             ...state,
             cart: state.cart.map((item) => {
-              if (item.id === action.payload.id) {
-                return { ...item, quantity: action.payload.quantity };
+              if (item.id === action.payload.coffeeId) {
+                return { ...item, quantity: item.quantity + 1 };
               } else {
                 return item;
               }
             }),
           };
-        } else {
+        case 'DECREMENT_ITEM_QUANTITY':
           return {
             ...state,
-            cart: [...state.cart, { ...action.payload }],
+            cart: state.cart.map((item) => {
+              if (item.id === action.payload.coffeeId) {
+                return { ...item, quantity: item.quantity - 1 };
+              } else {
+                return item;
+              }
+            }),
           };
-        }
-      }
+        case 'REMOVE_ITEM':
+          const currentItemIndex = state.cart.findIndex(
+            (item) => item.id === action.payload.coffeeId
+          );
 
-      if (action.type === 'INCREMENT_ITEM_QUANTITY') {
-        return {
-          ...state,
-          cart: state.cart.map((item) => {
-            if (item.id === action.payload.coffeeId) {
-              return { ...item, quantity: item.quantity + 1 };
-            } else {
-              return item;
-            }
-          }),
-        };
+          if (currentItemIndex >= 0) {
+            return {
+              ...state,
+              cart: state.cart.splice(currentItemIndex, 1),
+            };
+          }
+        default:
+          return state;
       }
-
-      if (action.type === 'DECREMENT_ITEM_QUANTITY') {
-        return {
-          ...state,
-          cart: state.cart.map((item) => {
-            if (item.id === action.payload.coffeeId) {
-              return { ...item, quantity: item.quantity - 1 };
-            } else {
-              return item;
-            }
-          }),
-        };
-      }
-
-      if (action.type === 'REMOVE_ITEM') {
-        const currentItemIndex = state.cart.findIndex(
-          (item) => item.id === action.payload.coffeeId
-        );
-
-        if (currentItemIndex >= 0) {
-          return {
-            ...state,
-            cart: state.cart.splice(currentItemIndex, 1),
-          };
-        }
-      }
-      return state;
     },
     {
       cart: [],
