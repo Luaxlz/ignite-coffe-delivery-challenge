@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useReducer } from 'react';
+import { OrderInfo } from '../Pages/Checkout';
 
 export interface Item {
   id: string;
@@ -17,61 +18,128 @@ interface CartContextProps {
   children: ReactNode;
 }
 
+interface Order extends OrderInfo {
+  id: string;
+  items: Item[];
+}
+
+interface CartState {
+  cart: Item[];
+  orders: Order[];
+}
+
 export const CartContext = createContext({} as CartContextType);
 
 export function CartContextProvider({ children }: CartContextProps) {
-  const [cart, setCart] = useState<Item[]>([]);
+  const [cartState, dispatch] = useReducer(
+    (state: CartState, action: any) => {
+      if (action.type === 'ADD_ITEM') {
+        const itemAlreadyAdded = state.cart.find(
+          (item) => item.id === action.payload.id
+        );
+
+        if (itemAlreadyAdded) {
+          return {
+            ...state,
+            cart: state.cart.map((item) => {
+              if (item.id === action.payload.id) {
+                return { ...item, quantity: action.payload.quantity };
+              } else {
+                return item;
+              }
+            }),
+          };
+        } else {
+          return {
+            ...state,
+            cart: [...state.cart, { ...action.payload }],
+          };
+        }
+      }
+
+      if (action.type === 'INCREMENT_ITEM_QUANTITY') {
+        return {
+          ...state,
+          cart: state.cart.map((item) => {
+            if (item.id === action.payload.coffeeId) {
+              return { ...item, quantity: item.quantity + 1 };
+            } else {
+              return item;
+            }
+          }),
+        };
+      }
+
+      if (action.type === 'DECREMENT_ITEM_QUANTITY') {
+        return {
+          ...state,
+          cart: state.cart.map((item) => {
+            if (item.id === action.payload.coffeeId) {
+              return { ...item, quantity: item.quantity - 1 };
+            } else {
+              return item;
+            }
+          }),
+        };
+      }
+
+      if (action.type === 'REMOVE_ITEM') {
+        const currentItemIndex = state.cart.findIndex(
+          (item) => item.id === action.payload.coffeeId
+        );
+
+        if (currentItemIndex >= 0) {
+          return {
+            ...state,
+            cart: state.cart.splice(currentItemIndex, 1),
+          };
+        }
+      }
+      return state;
+    },
+    {
+      cart: [],
+      orders: [],
+    }
+  );
+
+  const { cart } = cartState;
 
   function addItemToCart(coffee: Item) {
-    const isItemAlreadyAdded = cart.find((item) => item.id === coffee.id);
-
-    if (isItemAlreadyAdded) {
-      setCart((state) =>
-        state.map((item) => {
-          if (item.id === coffee.id) {
-            return { ...item, quantity: coffee.quantity };
-          } else {
-            return item;
-          }
-        })
-      );
-    } else {
-      setCart((state) => [
-        ...state,
-        { id: coffee.id, quantity: coffee.quantity },
-      ]);
-    }
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: {
+        id: coffee.id,
+        quantity: coffee.quantity,
+      },
+    });
   }
 
   function incrementCartItemQuantity(coffeeId: string) {
-    setCart((state) =>
-      state.map((item) => {
-        if (item.id === coffeeId) {
-          return { ...item, quantity: item.quantity + 1 };
-        } else {
-          return item;
-        }
-      })
-    );
+    dispatch({
+      type: 'INCREMENT_ITEM_QUANTITY',
+      payload: {
+        coffeeId,
+      },
+    });
   }
 
   function decrementCartItemQuantity(coffeeId: string) {
-    setCart((state) =>
-      state.map((item) => {
-        if (item.id === coffeeId) {
-          return { ...item, quantity: item.quantity - 1 };
-        } else {
-          return item;
-        }
-      })
-    );
+    dispatch({
+      type: 'DECREMENT_ITEM_QUANTITY',
+      payload: {
+        coffeeId,
+      },
+    });
   }
 
   function removeCartItem(coffeeId: string) {
-    const currentItemIndex = cart.findIndex((item) => item.id === coffeeId);
-    if (currentItemIndex >= 0) {
-      setCart((state) => state.splice(currentItemIndex, 1));
-    }
+    dispatch({
+      type: 'REMOVE_ITEM',
+      payload: {
+        coffeeId,
+      },
+    });
   }
 
   return (
