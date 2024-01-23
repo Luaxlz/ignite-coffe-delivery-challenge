@@ -1,5 +1,12 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { ActionTypes, Item, cartReducer } from '../reducers/cart';
+import { Item, cartReducer } from '../reducers/cart/reducer';
+import {
+  ActionTypes,
+  AddItemAction,
+  decrementItemQuantityAction,
+  incrementItemQuantityAction,
+  removeItemAction,
+} from '../reducers/cart/actions';
 
 interface CartContextType {
   cart: Item[];
@@ -24,40 +31,19 @@ export function CartContextProvider({ children }: CartContextProps) {
   const { cart } = cartState;
 
   function addItemToCart(coffee: Item) {
-    dispatch({
-      type: ActionTypes.ADD_ITEM,
-      payload: {
-        id: coffee.id,
-        quantity: coffee.quantity,
-      },
-    });
+    dispatch(AddItemAction(coffee));
   }
 
   function incrementCartItemQuantity(coffeeId: string) {
-    dispatch({
-      type: ActionTypes.INCREMENT_ITEM_QUANTITY,
-      payload: {
-        coffeeId,
-      },
-    });
+    dispatch(incrementItemQuantityAction(coffeeId));
   }
 
   function decrementCartItemQuantity(coffeeId: string) {
-    dispatch({
-      type: ActionTypes.DECREMENT_ITEM_QUANTITY,
-      payload: {
-        coffeeId,
-      },
-    });
+    dispatch(decrementItemQuantityAction(coffeeId));
   }
 
   function removeCartItem(coffeeId: string) {
-    dispatch({
-      type: ActionTypes.REMOVE_ITEM,
-      payload: {
-        coffeeId,
-      },
-    });
+    dispatch(removeItemAction(coffeeId));
   }
 
   return (

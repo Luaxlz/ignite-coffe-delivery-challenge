@@ -1,4 +1,5 @@
-import { OrderInfo } from '../Pages/Checkout';
+import { OrderInfo } from '../../Pages/Checkout';
+import { ActionTypes } from './actions';
 
 interface CartState {
   cart: Item[];
@@ -13,13 +14,6 @@ export interface Item {
 interface Order extends OrderInfo {
   id: string;
   items: Item[];
-}
-
-export enum ActionTypes {
-  ADD_ITEM = 'ADD_ITEM',
-  INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
-  DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
-  REMOVE_ITEM = 'REMOVE_ITEM',
 }
 
 export function cartReducer(state: CartState, action: any) {
@@ -50,7 +44,7 @@ export function cartReducer(state: CartState, action: any) {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          if (item.id === action.payload.coffeeId) {
+          if (item.id === action.payload.itemId) {
             return { ...item, quantity: item.quantity + 1 };
           } else {
             return item;
@@ -61,7 +55,7 @@ export function cartReducer(state: CartState, action: any) {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          if (item.id === action.payload.coffeeId) {
+          if (item.id === action.payload.itemId) {
             return { ...item, quantity: item.quantity - 1 };
           } else {
             return item;
@@ -70,7 +64,7 @@ export function cartReducer(state: CartState, action: any) {
       };
     case ActionTypes.REMOVE_ITEM:
       const currentItemIndex = state.cart.findIndex(
-        (item) => item.id === action.payload.coffeeId
+        (item) => item.id === action.payload.itemId
       );
 
       if (currentItemIndex >= 0) {
