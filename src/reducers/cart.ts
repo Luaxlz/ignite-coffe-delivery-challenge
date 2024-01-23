@@ -15,9 +15,16 @@ interface Order extends OrderInfo {
   items: Item[];
 }
 
+export enum ActionTypes {
+  ADD_ITEM = 'ADD_ITEM',
+  INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
+  DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
+  REMOVE_ITEM = 'REMOVE_ITEM',
+}
+
 export function cartReducer(state: CartState, action: any) {
   switch (action.type) {
-    case 'ADD_ITEM':
+    case ActionTypes.ADD_ITEM:
       const itemAlreadyAdded = state.cart.find(
         (item) => item.id === action.payload.id
       );
@@ -39,7 +46,7 @@ export function cartReducer(state: CartState, action: any) {
           cart: [...state.cart, { ...action.payload }],
         };
       }
-    case 'INCREMENT_ITEM_QUANTITY':
+    case ActionTypes.INCREMENT_ITEM_QUANTITY:
       return {
         ...state,
         cart: state.cart.map((item) => {
@@ -50,7 +57,7 @@ export function cartReducer(state: CartState, action: any) {
           }
         }),
       };
-    case 'DECREMENT_ITEM_QUANTITY':
+    case ActionTypes.DECREMENT_ITEM_QUANTITY:
       return {
         ...state,
         cart: state.cart.map((item) => {
@@ -61,7 +68,7 @@ export function cartReducer(state: CartState, action: any) {
           }
         }),
       };
-    case 'REMOVE_ITEM':
+    case ActionTypes.REMOVE_ITEM:
       const currentItemIndex = state.cart.findIndex(
         (item) => item.id === action.payload.coffeeId
       );
