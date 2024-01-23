@@ -8,9 +8,24 @@ import {
 } from './styles';
 import SuccessImage from '../../assets/SuccessIllustration.svg';
 import { useTheme } from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useCart } from '../../hooks/useCart';
 
 export function Success() {
   const theme = useTheme();
+  const { orders } = useCart();
+  const { orderId } = useParams();
+  const orderInfo = orders.find((order) => order.id === Number(orderId));
+  const paymentMethod = {
+    credit: 'Cartão de crédito',
+    debit: 'Cartão de débito',
+    cash: 'Dinheiro',
+  };
+
+  if (!orderInfo?.id) {
+    return null;
+  }
+
   return (
     <SuccessContainer>
       <Order>
@@ -29,9 +44,14 @@ export function Success() {
 
               <div>
                 <span>
-                  Entrega em <strong>Rua Qualquer, Numero</strong>
+                  Entrega em{' '}
+                  <strong>
+                    {orderInfo.street}, {orderInfo.number}
+                  </strong>
                 </span>
-                <span>Bairro - Cidade, UF</span>
+                <span>
+                  {orderInfo.district} - {orderInfo.city}, {orderInfo.state}
+                </span>
               </div>
             </div>
 
@@ -57,7 +77,7 @@ export function Success() {
 
               <div>
                 <span>Pamento na entrega</span>
-                <strong>Cartão de Crédito</strong>
+                <strong>{paymentMethod[orderInfo.paymentMethod]}</strong>
               </div>
             </div>
           </InfoContent>

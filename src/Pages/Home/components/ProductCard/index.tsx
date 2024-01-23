@@ -7,9 +7,9 @@ import {
   Actions,
   Tags,
 } from './styles';
-import { useContext, useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
-import { CartContext } from '../../../../contexts/CartContext';
+import { useState, useEffect } from 'react';
+import { useCart } from '../../../../hooks/useCart';
 
 export type CoffeeProps = {
   coffee: {
@@ -23,7 +23,7 @@ export type CoffeeProps = {
 };
 
 export function ProductCard({ coffee }: CoffeeProps) {
-  const { addItemToCart } = useContext(CartContext);
+  const { addItemToCart } = useCart();
   const theme = useTheme();
   const [quantity, setQuantity] = useState(1);
   const [isItemAdded, setIsItemAdded] = useState(false);
@@ -64,8 +64,8 @@ export function ProductCard({ coffee }: CoffeeProps) {
       <img src={coffee.image} alt={coffee.title} />
       <div>
         {coffee.tags.map((tag) => (
-          <Tags>
-            <span key={tag}>{tag}</span>
+          <Tags key={tag}>
+            <span>{tag}</span>
           </Tags>
         ))}
       </div>

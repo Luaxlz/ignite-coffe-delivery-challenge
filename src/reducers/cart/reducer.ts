@@ -12,7 +12,7 @@ export interface Item {
   quantity: number;
 }
 
-interface Order extends OrderInfo {
+export interface Order extends OrderInfo {
   id: string;
   items: Item[];
 }
@@ -62,6 +62,19 @@ export function cartReducer(state: CartState, action: any) {
         if (indexToRemove >= 0) {
           draft.cart.splice(indexToRemove, 1);
         }
+      });
+    }
+    case ActionTypes.CHECKOUT: {
+      return produce(state, (draft) => {
+        const incomingOrder = {
+          id: new Date().getTime(),
+          items: state.cart,
+          ...action.payload.order,
+        };
+        draft.orders.push(incomingOrder);
+        draft.cart = [];
+
+        action.payload.callback(`/order/${incomingOrder.id}/success`);
       });
     }
     default:

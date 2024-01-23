@@ -24,16 +24,16 @@ import { CartCoffeeCard } from './components/CartCoffeeCard';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Fragment, useContext } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { Fragment } from 'react';
 import { coffees } from '../../../data.json';
 import { Radio } from './components/Radio';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../hooks/useCart';
 
 const deliveryAddressSchema = zod.object({
   cep: zod.string().min(1),
   city: zod.string().min(1),
-  complement: zod.string().min(1),
+  complement: zod.string(),
   district: zod.string().min(1),
   number: zod.string().min(1),
   state: zod.string().min(1),
@@ -47,11 +47,10 @@ export type OrderInfo = zod.infer<typeof deliveryAddressSchema>;
 
 export function Checkout() {
   const navigate = useNavigate();
-  const { cart } = useContext(CartContext);
+  const { cart, checkout } = useCart();
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm<OrderInfo>({
@@ -87,8 +86,7 @@ export function Checkout() {
       alert('Ops! Parece que você não tem nada no seu carrinho ainda');
       navigate('/');
     }
-    //checkout(data);
-    reset();
+    checkout(data);
   }
 
   return (

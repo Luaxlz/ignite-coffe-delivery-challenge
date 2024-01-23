@@ -2,11 +2,10 @@ import { CartCounter, HeaderContainer } from './styles';
 import LogoCoffeeDelivery from '../../assets/Logo/Logo@ignite-coffe-delivery.svg';
 import { MapPin, ShoppingCart } from '@phosphor-icons/react';
 import { NavLink } from 'react-router-dom';
-import { useContext } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { useCart } from '../../hooks/useCart';
 
 export function Header() {
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
   const cartItemsCount = cart.reduce((previuosValue, currentItem) => {
     return (previuosValue += currentItem.quantity);
   }, 0);

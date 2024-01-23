@@ -5,9 +5,7 @@ import {
 } from './styles';
 import { QuantityButton } from '../../../../components/QuantityButton';
 import { Trash } from '@phosphor-icons/react';
-import { CartContext } from '../../../../contexts/CartContext';
-import { useContext } from 'react';
-
+import { useCart } from '../../../../hooks/useCart';
 interface CartCoffeeCardProps {
   coffee: {
     id: string;
@@ -25,7 +23,7 @@ export function CartCoffeeCard({ coffee }: CartCoffeeCardProps) {
     incrementCartItemQuantity,
     decrementCartItemQuantity,
     removeCartItem,
-  } = useContext(CartContext);
+  } = useCart();
 
   function handleCartIncrement() {
     incrementCartItemQuantity(coffee.id);
