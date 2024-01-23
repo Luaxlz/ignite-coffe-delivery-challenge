@@ -92,9 +92,9 @@ export function Checkout() {
   return (
     <>
       <CheckoutContainer>
-        <form onSubmit={handleSubmit(handleCheckout)}>
-          <OrderFormContainer>
-            <CheckoutTitle>Complete o seu pedido</CheckoutTitle>
+        <OrderFormContainer>
+          <CheckoutTitle>Complete o seu pedido</CheckoutTitle>
+          <form id='order' onSubmit={handleSubmit(handleCheckout)}>
             <OrderForm>
               <TitleInfo
                 Icon={MapPinLine}
@@ -199,46 +199,44 @@ export function Checkout() {
                 </div>
               </PaymentActions>
             </PaymentContainer>
-          </OrderFormContainer>
-          <OrderProductsContainer>
-            <CheckoutTitle>Cafés selecionados</CheckoutTitle>
-            <CartContainer>
-              <div id='productsContainer'>
-                {cartHasItems ? (
-                  coffeesInCart.map((coffee) => (
-                    <Fragment key={coffee.id}>
-                      <CartCoffeeCard coffee={coffee} />
-                      <Divider />
-                    </Fragment>
-                  ))
-                ) : (
-                  <span>Nenhum item no carrinho</span>
-                )}
+          </form>
+        </OrderFormContainer>
+        <OrderProductsContainer>
+          <CheckoutTitle>Cafés selecionados</CheckoutTitle>
+          <CartContainer>
+            <div id='productsContainer'>
+              {cartHasItems ? (
+                coffeesInCart.map((coffee) => (
+                  <Fragment key={coffee.id}>
+                    <CartCoffeeCard coffee={coffee} />
+                    <Divider />
+                  </Fragment>
+                ))
+              ) : (
+                <span>Nenhum item no carrinho</span>
+              )}
+            </div>
+            <ResumeContainer>
+              <div className='resumeInfo'>
+                <span>Total dos itens</span>
+                <span className='resumeValue'>
+                  R$ {coffeesInCartTotalPrice.toFixed(2)}
+                </span>
               </div>
-              <ResumeContainer>
-                <div className='resumeInfo'>
-                  <span>Total dos itens</span>
-                  <span className='resumeValue'>
-                    R$ {coffeesInCartTotalPrice.toFixed(2)}
-                  </span>
-                </div>
-                <div className='resumeInfo'>
-                  <span>Entrega</span>
-                  <span className='resumeValue'>
-                    R$ {deliveryFee.toFixed(2)}
-                  </span>
-                </div>
-                <div className='resumeInfo' id='totalInfo'>
-                  <span>Total</span>
-                  <span>R$ {orderTotalPrice.toFixed(2)}</span>
-                </div>
-              </ResumeContainer>
-              <button id='confirmOrderButton' type='submit'>
-                Confirmar pedido
-              </button>
-            </CartContainer>
-          </OrderProductsContainer>
-        </form>
+              <div className='resumeInfo'>
+                <span>Entrega</span>
+                <span className='resumeValue'>R$ {deliveryFee.toFixed(2)}</span>
+              </div>
+              <div className='resumeInfo' id='totalInfo'>
+                <span>Total</span>
+                <span>R$ {orderTotalPrice.toFixed(2)}</span>
+              </div>
+            </ResumeContainer>
+            <button id='confirmOrderButton' type='submit' form='order'>
+              Confirmar pedido
+            </button>
+          </CartContainer>
+        </OrderProductsContainer>
       </CheckoutContainer>
     </>
   );

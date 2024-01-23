@@ -3,13 +3,12 @@ import styled from 'styled-components';
 export const CheckoutContainer = styled.main`
   width: 100%;
   height: 100%;
-
-  form {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    padding: 40px 160px;
-  }
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
+  padding: 2.5rem 10rem;
 `;
 
 export const CheckoutTitle = styled.div`

@@ -68,11 +68,11 @@ export function CartContextProvider({ children }: CartContextProps) {
     dispatch(checkoutAction(order, navigate));
   }
 
-  // useEffect(() => {
-  //   const stateJSON = JSON.stringify(cartState);
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cartState);
 
-  //   localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON);
-  // }, [cartState]);
+    localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON);
+  }, [cartState]);
 
   return (
     <CartContext.Provider
