@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import { OrderInfo } from '../../Pages/Checkout';
 import { ActionTypes } from './actions';
 
@@ -18,61 +19,51 @@ interface Order extends OrderInfo {
 
 export function cartReducer(state: CartState, action: any) {
   switch (action.type) {
-    case ActionTypes.ADD_ITEM:
-      const itemAlreadyAdded = state.cart.find(
-        (item) => item.id === action.payload.id
-      );
+    case ActionTypes.ADD_ITEM: {
+      return produce(state, (draft) => {
+        const itemAlreadyInCart = draft.cart.find(
+          (item) => item.id === action.payload.id
+        );
+        if (itemAlreadyInCart) {
+          itemAlreadyInCart.quantity = action.payload.quantity;
+        } else {
+          draft.cart.push(action.payload);
+        }
+      });
+    }
+    case ActionTypes.INCREMENT_ITEM_QUANTITY: {
+      return produce(state, (draft) => {
+        const indexToIncrement = draft.cart.findIndex(
+          (item) => item.id === action.payload.itemId
+        );
 
-      if (itemAlreadyAdded) {
-        return {
-          ...state,
-          cart: state.cart.map((item) => {
-            if (item.id === action.payload.id) {
-              return { ...item, quantity: action.payload.quantity };
-            } else {
-              return item;
-            }
-          }),
-        };
-      } else {
-        return {
-          ...state,
-          cart: [...state.cart, { ...action.payload }],
-        };
-      }
-    case ActionTypes.INCREMENT_ITEM_QUANTITY:
-      return {
-        ...state,
-        cart: state.cart.map((item) => {
-          if (item.id === action.payload.itemId) {
-            return { ...item, quantity: item.quantity + 1 };
-          } else {
-            return item;
-          }
-        }),
-      };
-    case ActionTypes.DECREMENT_ITEM_QUANTITY:
-      return {
-        ...state,
-        cart: state.cart.map((item) => {
-          if (item.id === action.payload.itemId) {
-            return { ...item, quantity: item.quantity - 1 };
-          } else {
-            return item;
-          }
-        }),
-      };
-    case ActionTypes.REMOVE_ITEM:
-      const currentItemIndex = state.cart.findIndex(
-        (item) => item.id === action.payload.itemId
-      );
+        if (indexToIncrement >= 0) {
+          draft.cart[indexToIncrement].quantity += 1;
+        }
+      });
+    }
+    case ActionTypes.DECREMENT_ITEM_QUANTITY: {
+      return produce(state, (draft) => {
+        const indexToDecrement = draft.cart.findIndex(
+          (item) => item.id === action.payload.itemId
+        );
 
-      if (currentItemIndex >= 0) {
-        return {
-          ...state,
-          cart: state.cart.splice(currentItemIndex, 1),
-        };
-      }
+        if (indexToDecrement >= 0) {
+          draft.cart[indexToDecrement].quantity -= 1;
+        }
+      });
+    }
+    case ActionTypes.REMOVE_ITEM: {
+      return produce(state, (draft) => {
+        const indexToRemove = draft.cart.findIndex(
+          (item) => item.id === action.payload.itemId
+        );
+
+        if (indexToRemove >= 0) {
+          draft.cart.splice(indexToRemove, 1);
+        }
+      });
+    }
     default:
       return state;
   }

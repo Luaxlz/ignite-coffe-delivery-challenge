@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useReducer } from 'react';
 import { Item, cartReducer } from '../reducers/cart/reducer';
 import {
-  ActionTypes,
   AddItemAction,
   decrementItemQuantityAction,
   incrementItemQuantityAction,
